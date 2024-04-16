@@ -1,7 +1,8 @@
 package com.example.pw25s.Ecommerce.service;
 
+import com.example.pw25s.Ecommerce.model.Category;
 import com.example.pw25s.Ecommerce.model.Order;
-import com.example.pw25s.Ecommerce.repository.CategoryRepository;
+
 import com.example.pw25s.Ecommerce.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 
@@ -10,25 +11,25 @@ import java.util.List;
 @Service
 public class OrderService {
 
-    private final com.example.pw25s.Ecommerce.repository.OrderRepository OrderRepository;
+    private final OrderRepository orderRepository;
 
-    public OrderService(OrderRepository OrderRepository) {
-        this.OrderRepository = OrderRepository;
+    public OrderService(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
     }
 
     public Order save(Order order) {
-        return OrderRepository.save(order);
+        return orderRepository.save(order);
     }
 
     public Order findOne(Long id) {
-        return OrderRepository.findById(id).orElse(null);
+        return orderRepository.findById(id).orElse(null);
     }
 
     public List<Order> findAll() {
-        return OrderRepository.findAll();
+        return orderRepository.findAll();
     }
 
     public void delete(Long id) {
-        OrderRepository.deleteById(id);
+        orderRepository.deleteById(id);
     }
 }

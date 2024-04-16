@@ -26,5 +26,5 @@ public class Product {
 
     @ManyToOne
     @JoinColumn(name="category_id")
-    private br.edu.utfpr.pb.pw25s.server.model.Category category;
+    private Category category;
 }
