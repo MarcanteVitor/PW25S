@@ -9,6 +9,6 @@ import lombok.*;
 @Builder
 public class GenericResponse {
 
-    private String message = "aiukhjifewiu";
+    private String message = "GenericResponse";
 
 }

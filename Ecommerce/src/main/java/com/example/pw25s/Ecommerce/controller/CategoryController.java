@@ -27,7 +27,7 @@ public class CategoryController {
                 .buildAndExpand(category.getId()).toUri();
         return ResponseEntity.created( location ).body(category);
     }
-    // http://localhost:8025/categories/1
+
     @GetMapping("{id}")
     public ResponseEntity<?> findOne(@PathVariable Long id) {
         Category category = categoryService.findOne(id);
@@ -37,7 +37,7 @@ public class CategoryController {
             return ResponseEntity.noContent().build();
         }
     }
-    // http://localhost:8025/categories
+
     @GetMapping
     public ResponseEntity<List<Category>> findAll() {
         return ResponseEntity.ok(categoryService.findAll());

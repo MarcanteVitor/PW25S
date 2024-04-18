@@ -1,5 +1,4 @@
 package com.example.pw25s.Ecommerce.controller;
-
 import com.example.pw25s.Ecommerce.model.User;
 import com.example.pw25s.Ecommerce.service.UserService;
 import com.example.pw25s.Ecommerce.shared.GenericResponse;
@@ -25,24 +24,14 @@ public class UserController {
         return GenericResponse.builder().message("User saved.").build();
     }
 
-
     @GetMapping("{id}")
     public ResponseEntity<?> findOne(@PathVariable Long id) {
-        //Product product = productService.findOne(id);
         System.out.println(userService.findOne(id));
-//        if (product != null) {
-//            return ResponseEntity.ok(product);
-//        } else {
-//            return ResponseEntity.noContent().build();
-//        }
         return null;
     }
 
-
     @GetMapping
     public ResponseEntity<List<User>> findAll() {
-        System.out.println("aquiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
-
         return ResponseEntity.ok(userService.findAll());
     }
 
@@ -51,7 +40,5 @@ public class UserController {
     public void delete(@PathVariable Long id) {
         userService.delete(id);
     }
-
-
 
 }
