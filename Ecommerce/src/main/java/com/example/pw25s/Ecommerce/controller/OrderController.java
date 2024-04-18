@@ -28,4 +28,22 @@ public class OrderController {
         return ResponseEntity.created( location ).body(order);
     }
 
+    @GetMapping("{id}")
+    public ResponseEntity<?> findOne(@PathVariable Long id) {
+
+        System.out.println(orderService.findOne(id));
+        return null;
+    }
+    @GetMapping
+    public ResponseEntity<List<Order>> findAll() {
+        System.out.println("aquiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
+
+        return ResponseEntity.ok(orderService.findAll());
+    }
+    @DeleteMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long id) {
+        orderService.delete(id);
+    }
+
 }

@@ -14,7 +14,7 @@ public class ProductOrderController {
                 .buildAndExpand(productOrder.getId()).toUri();
         return ResponseEntity.created( location ).body(productOrder);
     }
-    // http://localhost:8025/categories/1
+
     @GetMapping("{id}")
     public ResponseEntity<?> findOne(@PathVariable Long id) {
         ProductOrder productOrder = productOrderService.findOne(id);
@@ -24,7 +24,7 @@ public class ProductOrderController {
             return ResponseEntity.noContent().build();
         }
     }
-    // http://localhost:8025/categories
+
     @GetMapping
     public ResponseEntity<List<ProductOrder>> findAll() {
         return ResponseEntity.ok(productOrderService.findAll());
