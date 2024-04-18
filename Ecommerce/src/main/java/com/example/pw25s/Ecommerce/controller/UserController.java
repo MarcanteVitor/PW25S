@@ -3,8 +3,11 @@ package com.example.pw25s.Ecommerce.controller;
 import com.example.pw25s.Ecommerce.model.User;
 import com.example.pw25s.Ecommerce.service.UserService;
 import com.example.pw25s.Ecommerce.shared.GenericResponse;
-import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("users")
@@ -17,7 +20,7 @@ public class UserController {
     }
 
     @PostMapping
-    public GenericResponse createUser(@/ @RequestBody User user) {
+    public GenericResponse createUser(@RequestBody User user) {
         userService.save(user);
         return GenericResponse.builder().message("User saved.").build();
     }

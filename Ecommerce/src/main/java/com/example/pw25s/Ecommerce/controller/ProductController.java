@@ -32,15 +32,14 @@ public class ProductController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<?> findOne(@PathVariable Long id) {
-        //Product product = productService.findOne(id);
+    public ResponseEntity<Product> findOne(@PathVariable Long id) {
+        Product product = productService.findOne(id);
         System.out.println(productService.findOne(id));
-//        if (product != null) {
-//            return ResponseEntity.ok(product);
-//        } else {
-//            return ResponseEntity.noContent().build();
-//        }
-        return null;
+        if (product != null) {
+            return ResponseEntity.ok(product);
+        } else {
+           return ResponseEntity.noContent().build();
+        }
     }
 
 

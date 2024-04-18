@@ -1,5 +1,18 @@
 package com.example.pw25s.Ecommerce.controller;
 
+import com.example.pw25s.Ecommerce.model.ProductOrder;
+import com.example.pw25s.Ecommerce.service.ProductOrderService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
+import java.util.List;
+
+@RestController
+@RequestMapping("product-orders")
 public class ProductOrderController {
     private final ProductOrderService productOrderService;
     public ProductOrderController(ProductOrderService productOrderService) {
