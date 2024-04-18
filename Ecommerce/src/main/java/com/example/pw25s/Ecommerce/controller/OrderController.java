@@ -31,8 +31,12 @@ public class OrderController {
 
     @GetMapping("{id}")
     public ResponseEntity<?> findOne(@PathVariable Long id) {
-        System.out.println(orderService.findOne(id));
-        return null;
+        Order order = orderService.findOne(id);
+        if (order != null) {
+            return ResponseEntity.ok(order);
+        } else {
+            return ResponseEntity.noContent().build();
+        }
     }
 
     @GetMapping
