@@ -1,7 +1,6 @@
 package com.example.pw25s.Ecommerce.model;
 
 import com.example.pw25s.Ecommerce.annotation.UniqueUsername;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -14,11 +13,12 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 
 @Entity
-@Table(name = "tb_user") //, uniqueConstraints = @UniqueConstraint(columnNames = "username"))
+@Table(name = "tb_user")
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@ToString
 public class User implements UserDetails {
 
     @Id
@@ -26,7 +26,7 @@ public class User implements UserDetails {
     private Long id;
 
     @UniqueUsername
-//    @NotNull(message = "{br.edu.pb.utfpr.pw25s.server.user.username.NotNull}")
+    @NotNull(message = "{br.edu.pb.utfpr.pw25s.server.user.username.NotNull}")
     @Size(min = 4, max = 255)
     private String username;
 
@@ -43,20 +43,6 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return AuthorityUtils.createAuthorityList("ROLE_USER");
-    }
-
-    @Override
-    public String getPassword() {
-        return null;
-    }
-
-    public String getDisplayName() {
-        return null;
-    }
-
-    @Override
-    public String getUsername() {
-        return null;
     }
 
     @Override
@@ -77,8 +63,5 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    public void setPassword(String encode) {
     }
 }
