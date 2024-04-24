@@ -23,6 +23,10 @@ public class ProductOrderService {
         return productOrderRepository.findById(id).orElse(null);
     }
 
+//    public List<ProductOrder> getProductOrdersByOrderId(Long id) {
+//        return productOrderRepository.findByOrderId(id);
+//    }
+
     public List<ProductOrder> findAll() {
         return productOrderRepository.findAll();
     }

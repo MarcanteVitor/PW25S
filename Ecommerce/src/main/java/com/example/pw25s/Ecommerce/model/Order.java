@@ -21,4 +21,7 @@ public class Order {
     @ManyToOne
     @JoinColumn(name="user_id")
     private User user;
+
+    public Order(Date data, User user) {
+    }
 }
