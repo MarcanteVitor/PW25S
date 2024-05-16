@@ -1,6 +1,5 @@
 package com.example.pw25s.Ecommerce.controller;
 
-import com.example.pw25s.Ecommerce.DTO.ProductDTO;
 import com.example.pw25s.Ecommerce.model.Product;
 import com.example.pw25s.Ecommerce.service.ProductService;
 import jakarta.validation.Valid;
