@@ -1,27 +1,23 @@
 import { ChangeEvent } from "react";
 
 interface IInputProps {
-  name: string;
+  labelFor: string;
   className: string;
   label: string;
   type: string;
   placeholder: string;
-  value: string;
   hasError: boolean;
-  error: string;
-  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  error: string | undefined;
 }
 
 export function Input({
-  name,
+  labelFor,
   className,
   label,
   type,
   placeholder,
-  value,
   hasError,
   error,
-  onChange,
 }: IInputProps) {
   let inputClassName = className;
   if (hasError) {
@@ -30,15 +26,8 @@ export function Input({
 
   return (
     <>
-      <input
-        type={type}
-        className={inputClassName}
-        placeholder={placeholder}
-        onChange={onChange}
-        value={value}
-        name={name}
-      />
-      {label && <label htmlFor={name}>{label}</label>}
+      <input type={type} className={inputClassName} placeholder={placeholder} />
+      {label && <label htmlFor={labelFor}>{label}</label>}
       {hasError && <div className="invalid-feedback">{error}</div>}
     </>
   );

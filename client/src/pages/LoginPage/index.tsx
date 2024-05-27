@@ -1,17 +1,24 @@
+import React, { ChangeEvent, useState } from "react";
 import { IUserLogin } from "@/commons/interfaces";
+import { ButtonWithProgress } from "@/components/ButtonWithProgress";
 import AuthService from "@/service/AuthService";
-import { ChangeEvent, useState } from "react";
+import { Input } from "@/components/Input";
 import { Link, useNavigate } from "react-router-dom";
+import "./style.scss";
 
 export function LoginPage() {
   const [form, setForm] = useState({
     username: "",
     password: "",
   });
+
   const [pendingApiCall, setPendingApiCall] = useState(false);
+  const [disableSubmit, setDisableSubmit] = useState(true);
+
   const [apiError, setApiError] = useState("");
-  const [apiSuccess, setApiSuccess] = useState("");
   const navigate = useNavigate();
+
+  const { login } = AuthService;
 
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = event.target;
@@ -21,80 +28,94 @@ export function LoginPage() {
         [name]: value,
       };
     });
+    if (form.username === "" || form.password === "") {
+      setDisableSubmit(true);
+    } else {
+      setDisableSubmit(false);
+    }
+    setApiError("");
   };
 
   const onClickLogin = async () => {
-    const login: IUserLogin = {
+    setPendingApiCall(true);
+
+    const userLogin: IUserLogin = {
       username: form.username,
       password: form.password,
     };
-
-    const response = await AuthService.login(login);
-    if (response.status === 200 || response.status === 201) {
-      setApiSuccess("Cadastro realizado com sucesso!");
-      setTimeout(() => {
-        navigate("/home");
-      }, 1000);
+    const response = await login(userLogin);
+    if (response.status === 200) {
+      setPendingApiCall(false);
+      navigate("/home");
     } else {
-      setApiError("Erro ao cadastrar o usuário!");
+      setApiError(
+        "Falha ao autenticar no sistema, verifique os dados informados"
+      );
+      setPendingApiCall(false);
     }
-
-    setPendingApiCall(false);
   };
 
   return (
     <>
-      <div className="container">
-        <h1 className="text-center">Login</h1>
-        <div className="col-12 mb-3">
-          <label htmlFor="username">Informe seu usuário:</label>
-          <input
-            type="text"
-            id="username"
-            name="username"
-            value={form.username}
-            placeholder="Informe seu usuário"
-            className="form-control"
-            onChange={onChange}
-          />
-        </div>
-        <div className="col-12 mb-3">
-          <label htmlFor="password">Informe sua senha:</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={form.password}
-            placeholder="******"
-            className="form-control"
-            onChange={onChange}
-          />
-        </div>
-        {apiError && (
-          <div className="alert alert-danger text-center">{apiError}</div>
-        )}
-        {apiSuccess && (
-          <div className="alert alert-success text-center">{apiSuccess}</div>
-        )}
-        <div className="text-center">
-          <button
-            disabled={pendingApiCall}
-            className="btn btn-primary"
+      <main className="form-signin w-100 m-auto">
+        <form>
+          <div className="text-center">
+            <h1 className="h3 mb-3 fw-normal">Autenticação</h1>
+          </div>
+          <div className="form-floating">
+            <Input
+              label="Usuário"
+              className="form-control"
+              type="text"
+              placeholder="username"
+              value={form.username}
+              onChange={onChange}
+              name="username"
+              hasError={false}
+              error=""
+            />
+          </div>
+          <div className="form-floating">
+            <Input
+              label="Senha"
+              className="form-control"
+              type="password"
+              placeholder="Your password"
+              value={form.password}
+              onChange={onChange}
+              name="password"
+              hasError={false}
+              error=""
+            />
+          </div>
+
+          <div className="checkbox mb-3">
+            <label>
+              <input type="checkbox" value="remember-me" /> Lembrar
+            </label>
+          </div>
+          {apiError && (
+            <div className="col-12 mb-3">
+              <div className="alert alert-danger">{apiError}</div>
+            </div>
+          )}
+          <ButtonWithProgress
+            className="w-100 btn btn-lg btn-primary mb-3"
             onClick={onClickLogin}
-          >
-            {pendingApiCall && (
-              <div
-                className="spinner-border spinner-border-sm text-light-spinner mr-sm-1"
-                role="status"
-              ></div>
-            )}
-            Cadastrar
-          </button>
-        </div>
-        <div className="text-center">
-          <Link to="/signup">Cadastre-se</Link>
-        </div>
-      </div>
+            disabled={pendingApiCall || disableSubmit}
+            text="Autenticar"
+            pendingApiCall={pendingApiCall}
+          />
+          <div className="text-center">
+            Não possui cadastro? <br />
+            <Link className="link-primary" to="/signup">
+              Cadastrar-se
+            </Link>
+          </div>
+
+          <p className="mt-5 mb-3 text-muted">UTFPR &copy; 2010–2024</p>
+        </form>
+      </main>
     </>
   );
 }
