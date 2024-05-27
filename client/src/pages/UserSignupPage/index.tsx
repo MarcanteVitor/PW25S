@@ -1,38 +1,25 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { IUserSignUp } from "@/commons/interfaces";
-import { ButtonWithProgress } from "../../components/ButtonWithProgress";
-import { Input } from "../../components/Input";
-import AuthService from "@/service/AuthService";
-
-import "./style.scss";
+import { Input } from "@/components/Input";
+import { api } from "@/lib/axios";
+import AuthService from "../../service/AuthService";
+import { IUserSignup } from "../../commons/interfaces";
 
 export function UserSignupPage() {
-  const [form, setForm] = useState<IUserSignUp>({
+  const [form, setForm] = useState({
     displayName: "",
     username: "",
     password: "",
-    passwordRepeat: "",
   });
   const [errors, setErrors] = useState({
     displayName: "",
     username: "",
     password: "",
   });
-  const [pendingApiCall, setPendingApiCall] = useState(false);
-  const [passwordRepeatError, setPasswordRepeatError] = useState("");
-  const [apiError, setApiError] = useState("");
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (form.password || form.passwordRepeat) {
-      setPasswordRepeatError(
-        form.password === form.passwordRepeat
-          ? ""
-          : "As senhas devem ser iguais"
-      );
-    }
-  }, [form]);
+  const [pendingApiCall, setPendingApiCall] = useState(false);
+  const [apiError, setApiError] = useState("");
+  const [apiSuccess, setApiSuccess] = useState("");
 
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = event.target;
@@ -42,115 +29,107 @@ export function UserSignupPage() {
         [name]: value,
       };
     });
-    setErrors((previousErrors) => {
-      return {
-        ...previousErrors,
-        [name]: undefined,
-      };
-    });
   };
 
   const onClickSignup = async () => {
-    const user: IUserSignUp = {
+    setPendingApiCall(true);
+
+    const user: IUserSignup = {
       displayName: form.displayName,
       username: form.username,
       password: form.password,
-      passwordRepeat: form.passwordRepeat,
     };
-    setPendingApiCall(true);
 
     const response = await AuthService.signup(user);
-
     if (response.status === 200 || response.status === 201) {
-      navigate("/");
-    } else if (response) {
-      if (response.data && response.data.validationErrors) {
+      setApiSuccess("Cadastro realizado com sucesso!");
+      setTimeout(() => {
+        navigate("/login");
+      }, 1000);
+
+    } else {
+      setApiError("Erro ao cadastrar o usuário!");
+      if (response.data.validationErrors) {
         setErrors(response.data.validationErrors);
       }
-      setApiError("Ocorreu um erro ao salvar o usuário.");
     }
+
     setPendingApiCall(false);
   };
 
   return (
-    <main className="form-signup w-100 m-auto">
-      <form>
-        <div className="text-center">
-          <h1 className="h3 mb-3 fw-normal">Novo usuário</h1>
-        </div>
-        <div className="form-floating">
+    <>
+      <div className="container">
+        <h1 className="text-center">
+          Sign Up - {form.displayName} - {form.username}
+        </h1>
+        <div className="col-12 mb-3">
           <Input
+            id="displayName"
             name="displayName"
-            label="Informe o seu nome"
-            className="form-control"
+            label="Informe seu nome:"
             type="text"
-            placeholder="Informe seu nome"
-            onChange={onChange}
             value={form.displayName}
+            placeholder="Informe seu nome"
             hasError={errors.displayName ? true : false}
             error={errors.displayName}
+            onChange={onChange}
+            className="form-control"
           />
         </div>
-        <div className="form-floating">
+        <div className="col-12 mb-3">
           <Input
+            id="username"
             name="username"
-            label="Informe o usuário"
-            className="form-control"
+            label="Informe seu usuário:"
             type="text"
-            placeholder="Informe o usuário"
-            onChange={onChange}
             value={form.username}
+            placeholder="Informe seu usuário"
             hasError={errors.username ? true : false}
             error={errors.username}
+            onChange={onChange}
+            className="form-control"
           />
         </div>
-        <div className="form-floating">
+        <div className="col-12 mb-3">
           <Input
+            id="password"
             name="password"
-            label="Informe a senha"
-            className="form-control"
+            label="Informe a sua senha:"
             type="text"
-            placeholder="Informe a senha"
-            onChange={onChange}
             value={form.password}
+            placeholder="Informe a sua senha"
             hasError={errors.password ? true : false}
             error={errors.password}
-          />
-        </div>
-        <div className="form-floating">
-          <Input
-            name="passwordRepeat"
-            label="Confirme sua senha"
-            className="form-control"
-            type="password"
-            placeholder="Informe sua senha"
             onChange={onChange}
-            value={form.passwordRepeat}
-            hasError={passwordRepeatError ? true : false}
-            error={passwordRepeatError ? passwordRepeatError : ""}
+            className="form-control"
           />
         </div>
         {apiError && (
-          <div className="col-12 mb-3">
-            <div className="alert alert-danger">{apiError}</div>
-          </div>
+          <div className="alert alert-danger text-center">{apiError}</div>
         )}
-
-        <ButtonWithProgress
-          className="w-100 btn btn-lg btn-primary mb-3"
-          onClick={onClickSignup}
-          disabled={pendingApiCall || passwordRepeatError ? true : false}
-          text="Cadastrar"
-          pendingApiCall={pendingApiCall}
-        />
-
+        {apiSuccess && (
+          <div className="alert alert-success text-center">{apiSuccess}</div>
+        )}
         <div className="text-center">
-          Já possui cadastro? <br />
-          <Link className="link-primary" to="/">
-            Login
-          </Link>
+          <button
+            disabled={pendingApiCall}
+            className="btn btn-primary"
+            onClick={onClickSignup}
+          >
+            {pendingApiCall && (
+              <div
+                className="spinner-border spinner-border-sm text-light-spinner mr-sm-1"
+                role="status"
+              ></div>
+            )}
+            Cadastrar
+          </button>
         </div>
-      </form>
-    </main>
+        <div className="text-center">
+          <Link to="/login">Login</Link>
+        </div>
+      </div>
+    </>
   );
 }

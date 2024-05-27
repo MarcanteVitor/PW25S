@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { ICategory, IProduct } from "@/commons/interfaces";
 import CategoryService from "@/service/CategoryService";
-import ProductService from "@/service/ProductService";
 import { useForm } from "react-hook-form";
+import ProductService from "@/service/ProductService";
 
 export function ProductFormPage() {
   // hook useForm do react-hook-forms que irá controlar o estado do formulário.
@@ -13,8 +13,7 @@ export function ProductFormPage() {
     formState: { errors, isSubmitting },
     reset,
   } = useForm<IProduct>();
-  // controla a situação da requisição HTTP que está sendo realizada ao servidor ao cadastrar um novo produto.
-  const [pendingApiCall, setPendingApiCall] = useState(false);
+    
   // apiError controla a exibição das mensagem de erro que ocorrem ao realizar uma requisição HTTP para o servidor.
   const [apiError, setApiError] = useState("");
   // lista de categorias utilizada para carregar o select
@@ -65,9 +64,7 @@ export function ProductFormPage() {
       ...data,
       category: { id: data.category.id, name: "" },
     };
-    if (id) {
-      product.id = parseInt(id);
-    }
+
     const response = await save(product);
     if (response.status === 200 || response.status === 201) {
       navigate("/products");
@@ -167,7 +164,7 @@ export function ProductFormPage() {
             <button
               type="submit"
               className="btn btn-primary"
-              disabled={pendingApiCall ? true : false}
+              disabled={isSubmitting ? true : false}
             >
               Salvar
             </button>

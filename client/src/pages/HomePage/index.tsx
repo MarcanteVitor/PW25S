@@ -3,7 +3,7 @@ export function HomePage() {
     <>
       <main className="container">
         <div className="text-center">
-          <h1 className="h3 mb-3 fw-normal">HOME PAGE</h1>
+          <h1 className="h3 mb-3 fw-normal">Home Page</h1>
         </div>
       </main>
     </>

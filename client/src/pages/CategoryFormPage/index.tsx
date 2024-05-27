@@ -1,53 +1,42 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
 import { ICategory } from "@/commons/interfaces";
 import CategoryService from "@/service/CategoryService";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useNavigate, useParams } from "react-router-dom";
 
 export function CategoryFormPage() {
-  // hook useForm do react-hook-forms que irá controlar o estado do formulário.
   const {
     handleSubmit,
     register,
     formState: { errors, isSubmitting },
     reset,
   } = useForm<ICategory>();
-  // váriavel de estado para armazenar a mensagem de erro da API.
-  const [apiError, setApiError] = useState("");
-  // hook do react-router-dom para navegação entre as páginas.
-  const navigate = useNavigate();
-  // hook do react-router-dom para capturar o id da URL.
-  const { id } = useParams();
-  // funções do serviço de categoria.
-  const { save, findById } = CategoryService;
 
-  /* 
-  hook do react para executar ações ao carregar o componente.
-  se o id estiver preenchido, carrega os dados da categoria.
-  */
+  const navigate = useNavigate();
+  const { id } = useParams();
+  const [apiError, setApiError] = useState("");
+
   useEffect(() => {
     if (id) {
-      loadData(parseInt(id));
+      loadData(Number(id));
     }
   }, []);
 
-  // função para carregar os dados da categoria.
   const loadData = async (id: number) => {
-    const response = await findById(id);
+    const response = await CategoryService.findById(id);
     if (response.status === 200) {
       reset(response.data);
     } else {
-      setApiError("Falha ao carregar o registro.");
+      setApiError("Falha ao carregar a categoria!");
     }
   };
 
-  // função para salvar a categoria.
   const onSubmit = async (data: ICategory) => {
-    const response = await save(data);
-    if (response.status === 201 || response.status === 200) {
+    const response = await CategoryService.save(data);
+    if (response.status === 200 || response.status === 201) {
       navigate("/categories");
     } else {
-      setApiError("Falha ao carregar o registro.");
+      setApiError("Falha ao salvar a categoria!");
     }
   };
 
@@ -58,39 +47,44 @@ export function CategoryFormPage() {
           className="form-floating col-md-6"
           onSubmit={handleSubmit(onSubmit)}
         >
-          <div className="text-center   mb-3">
-            <span className="h3 fw-normal">Cadastro de Categoria</span>
-          </div>
-          <div className="form-floating mb-3">
+          <div className="text-center mb-3">
+            <span className="h3 mb-3 fw-normal">Cadastro de Categoria</span>
             <input type="hidden" {...register("id")} />
-            <input
-              className={"form-control" + (errors.name ? " is-invalid" : "")}
-              placeholder="Informe o nome"
-              type="text"
-              {...register("name", {
-                required: "O campo nome é obrigatório.",
-                minLength: {
-                  value: 2,
-                  message: "O tamanho deve ser entre 2 e 100 caracteres.",
-                },
-                maxLength: {
-                  value: 100,
-                  message: "O tamanho deve ser entre 2 e 100 caracteres.",
-                },
-              })}
-            />
-            <label htmlFor="name">Nome</label>
-            {errors.name && (
-              <div className="invalid-feedback">{errors.name.message}</div>
+
+            <div className="form-floating mb-3">
+              <input
+                type="text"
+                className={"form-control" + (errors.name ? " is-invalid" : "")}
+                id="name"
+                placeholder="Nome"
+                {...register("name", {
+                  required: "O campo nome é obrigatório",
+                  minLength: {
+                    value: 2,
+                    message: "O campo nome deve ter no mínimo 2 caracteres",
+                  },
+                  maxLength: {
+                    value: 50,
+                    message: "O campo nome deve ter no máximo 50 caracteres",
+                  },
+                })}
+              />
+              <label htmlFor="name">Nome</label>
+              {errors.name && (
+                <div className="invalid-feedback">{errors.name.message}</div>
+              )}
+            </div>
+            {apiError && (
+              <div className="alert alert-danger text-center">{apiError}</div>
             )}
+            <button
+              className="w-100 btn btn-lg btn-primary mb-3"
+              type="submit"
+              disabled={isSubmitting ? true : false}
+            >
+              Salvar
+            </button>
           </div>
-          {apiError && <div className="alert alert-danger">{apiError}</div>}
-          <button
-            className="w-100 btn btn-lg btn-primary mb-3"
-            disabled={isSubmitting ? true : false}
-          >
-            Salvar
-          </button>
         </form>
       </main>
     </>
