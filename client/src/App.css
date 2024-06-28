@@ -79,3 +79,16 @@
 }
 
 /* PRODUCT LIST */
+
+
+/* LOGIN  */
+.signup-link {
+  text-decoration: none; /* Remove qualquer sublinhado padrão */
+  color: inherit; /* Mantém a cor do link igual à cor do texto ao redor */
+}
+
+.signup-link:hover {
+  text-decoration: underline; /* Adiciona o sublinhado ao passar o mouse */
+}
+
+/* LOGIN  */
