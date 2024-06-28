@@ -41,11 +41,6 @@ export function ProductList() {
       setDataFiltred(data)
   };
 
-  const filterProducts = (value: string) => () => {
-    console.log("aqui 2" ,  value)
-    
-  }
-
   return (
     <>
       <div>
