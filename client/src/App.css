@@ -40,3 +40,42 @@
 .read-the-docs {
   color: #888;
 }
+
+
+/* PRODUCT LIST */
+
+/* ProductGrid.css */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+}
+
+.product-card {
+  border: 1px solid #ccc;
+  padding: 16px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.product-image {
+  width: 100%;
+  height: auto;
+  max-width: 150px;
+  margin: 0 auto;
+}
+
+.product-title {
+  font-size: 1.2em;
+  margin: 0.5em 0;
+}
+
+.product-description,
+.product-price,
+.product-discount,
+.product-stock-status,
+.product-time-left {
+  margin: 0.25em 0;
+}
+
+/* PRODUCT LIST */

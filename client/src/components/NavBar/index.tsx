@@ -1,11 +1,16 @@
 import { Link, NavLink } from "react-router-dom";
 import logo from "@/assets/utfpr-logo.png";
 import AuthService from "@/service/AuthService";
+import { CiShoppingCart } from "react-icons/ci";
 
 export function NavBar() {
   const onClickLogout = () => {
     AuthService.logout();
     window.location.reload();
+  };
+
+  const onClickOpenCart = () => {
+    alert("asdjkndfwejsknfwejkf")
   };
 
   return (
@@ -57,6 +62,24 @@ export function NavBar() {
                 Produtos V2
               </NavLink>
             </li>
+            <li className="nav-item">
+              <NavLink
+                to="/productList"
+                className={(navData) =>
+                  navData.isActive ? "nav-link active" : "nav-link"
+                }
+              >
+                Lista de produtos
+              </NavLink>
+            </li>
+
+{/* 
+            <li className="nav-item">
+              <button className="btn btn-light" onClick={onClickOpenCart}>
+                <CiShoppingCart />
+              </button>
+            </li> */}
+
 
             <li className="nav-item">
               <button className="btn btn-light" onClick={onClickLogout}>

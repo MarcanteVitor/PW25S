@@ -7,6 +7,7 @@ import { CategoryListPage } from "@/pages/CategoryListPage";
 import { CategoryFormPage } from "@/pages/CategoryFormPage";
 import { ProductFormPage } from "@/pages/ProductFormPage";
 import { ProductListPage } from "@/pages/ProductListPage";
+import { ProductList } from "@/pages/ProductList";
 import { ProductListPageV2 } from "@/pages/ProductListPageV2";
 import { ProductFormPageV2 } from "@/pages/ProductFormPageV2";
 
@@ -17,6 +18,7 @@ export function BaseRoutes() {
         {/* Public Routes */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<UserSignupPage />} />
+        <Route path="/productList" element={<ProductList />} />
 
         {/* Private Routes */}
         <Route element={<AuthenticatedRoutes />}>
