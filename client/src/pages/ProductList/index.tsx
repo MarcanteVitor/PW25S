@@ -6,6 +6,14 @@ import { useEffect, useState } from 'react';
 import { IProduct } from "@/commons/interfaces";
 import ProductService from "@/service/ProductService";
 import { CiSearch } from "react-icons/ci";
+import { BsCart2 } from "react-icons/bs";
+import AuthService from '@/service/AuthService';
+ 
+
+const onClickLogout = () => {
+  AuthService.logout();
+  window.location.reload();
+}
 
 export function ProductList() {
   const [data, setData] = useState<IProduct[]>([]);
@@ -30,7 +38,7 @@ export function ProductList() {
     }
   };
 
-
+    
   const goToProductPage = (product: IProduct) => () => {
     return navigate("/productpage" + product)
   }
@@ -42,8 +50,19 @@ export function ProductList() {
       setDataFiltred(data)
   };
 
+
+
   return (
     <>
+      <div className="d-flex justify-content-end" role="group" aria-label="Exemplo básico">
+        <button type="button" className="btn btn-light" id="cart">
+          <BsCart2/>
+          </button>
+          <button className="btn btn-light" onClick={onClickLogout}>
+                &times; Sair
+          </button>
+      </div> 
+
       <form className="d-flex" style={{ display: 'flex', alignItems: 'center', margin: '20px' }}>
         <input
           className="form-control me-2"

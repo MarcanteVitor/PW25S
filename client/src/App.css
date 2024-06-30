@@ -44,6 +44,10 @@
 
 /* PRODUCT LIST */
 
+#cart {
+  margin-right: 1rem;
+}
+
 /* ProductGrid.css */
 .product-grid {
   display: grid;
