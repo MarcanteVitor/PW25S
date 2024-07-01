@@ -11,23 +11,27 @@ import 'bootstrap/dist/css/bootstrap.css';
 import ModalExemplo from "../cart/index";
 
 
-
-
-const onClickLogout = () => {
-  AuthService.logout();
-  window.location.reload();
-}
-
 export function ProductList() {
   const [data, setData] = useState<IProduct[]>([]);
   const [dataFiltred, setDataFiltred] = useState<IProduct[]>([]);
   const [apiError, setApiError] = useState("");
+  const [showCart, setShowCart] = useState(false);
+  const [productsOnCartLength, setProductsOnCartLength] = useState(0);
   const { findAll } = ProductService;
   const navigate = useNavigate();
 
   useEffect(() => {
     loadData();
+    getProdutosOnCache()
   }, []);
+
+  const getProdutosOnCache = async () => {
+    const produtos = localStorage.getItem('produtos');
+    if (produtos) {
+      setProductsOnCartLength(JSON.parse(produtos).length)
+      setShowCart(true)
+    }
+  }
 
   const loadData = async () => {
     const response = await findAll();
@@ -41,14 +45,48 @@ export function ProductList() {
     }
   };
 
+  const addOnCart = (product: IProduct) => () => {
+    let arrayProdutosLocalStorage = []
+    const produtosFromLocalStorage = localStorage.getItem('produtos');
+
+    if (produtosFromLocalStorage) {
+      arrayProdutosLocalStorage = JSON.parse(produtosFromLocalStorage);
+    }
+
+    const produtoSelecionadoObj = {
+      produtoIndice: arrayProdutosLocalStorage.length + 1,
+      produtoId: product.id,
+      produtoNome: product.name,
+      produtoValorTotal: product.price,
+      produtoValorUnitario: product.price,
+      produtoQuantidade: 1
+    };
+
+    arrayProdutosLocalStorage.push(produtoSelecionadoObj);
+    setProductsOnCartLength(arrayProdutosLocalStorage.length);
+    setShowCart(true)
+    return localStorage.setItem('produtos', JSON.stringify(arrayProdutosLocalStorage));
     
+  }
+
+  const onClickOpenCart = () => {
+    try {
+      const produtos = localStorage.getItem("produtos");
+      if (!produtos) {
+        return
+      }
+
+    } catch (err) {
+    }
+  };
+
   const goToProductPage = (product: IProduct) => () => {
     return navigate("/productpage" + product)
   }
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event && event.target && event.target.value)
-      return setDataFiltred(dataFiltred.filter(data => data.category.name.toLowerCase().includes(event.target.value.toLowerCase())));
+      return setDataFiltred(dataFiltred.filter(data => data.category.name.toLowerCase().includes(event.target.value.toLowerCase()) || data.name.toLowerCase().includes(event.target.value.toLowerCase())));
     else
       setDataFiltred(data)
   };
@@ -57,16 +95,6 @@ export function ProductList() {
 
   return (
     <>
-      <div className="d-flex justify-content-end" role="group" aria-label="Exemplo básico">
-        <button type="button" className="btn btn-light" id="cart">       
-          <ModalExemplo />
-          </button>
-          
-          <button className="btn btn-light" onClick={onClickLogout}>
-                &times; Sair
-          </button>
-      </div> 
-
       <form className="d-flex" style={{ display: 'flex', alignItems: 'center', margin: '20px' }}>
         <input
           className="form-control me-2"
@@ -83,8 +111,22 @@ export function ProductList() {
           }}
         />
         <CiSearch style={{ fontSize: '24px', cursor: 'pointer', color: '#555' }} />
+        {showCart && (
+          <div className="d-flex justify-content-end" role="group" aria-label="Exemplo básico">
+            <button type="button" className="btn btn-light" id="cart" >
+            <ModalExemplo />
+            {productsOnCartLength}
+              <BsCart2 style={{ fontSize: '30px', cursor: 'pointer', color: '#555', marginTop: '-1px' }} textAnchor="kjdnajknsdas" />
+            </button>
+          </div>
+        )}
+
+
       </form>
       <div className="product-grid">
+        {dataFiltred.length < 1 && (
+          <div className="alert alert-danger">Não há produtos para os filtros especificados</div>
+        )}
         {dataFiltred.map(product => (
           <div className="product-card" style={{ position: 'relative', paddingBottom: '50px' }}>
             <div key={product.id} onClick={() => goToProductPage(product)}>
@@ -94,11 +136,15 @@ export function ProductList() {
                 className="product-image"
               />
               <h2 className="product-title">{product.name}</h2>
+              <p className="product-price">
+                {product.price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+              </p>
               <p className="product-description">{product.description}</p>
-              <p className="product-price">{product.price}</p>
+              <p></p>
             </div>
-            <div style={{ position: 'absolute', bottom: '0', textAlign: 'center', padding: '10px' }}>
-              <Button colorScheme='green'> Mais informações </Button>
+            <div className="d-flex flex-column align-items-center" style={{ position: 'absolute', bottom: '10px', width: '83%' }}>
+              <Button colorScheme='blue' size="sm" className="mb-2 mt-6">Mais Informações</Button>
+              <Button colorScheme='green' size="sm" onClick={addOnCart(product)}>Adicionar</Button>
             </div>
           </div>
         ))}
