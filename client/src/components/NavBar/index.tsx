@@ -3,6 +3,7 @@ import logo from "@/assets/utfpr-logo.png";
 import AuthService from "@/service/AuthService";
 import { CiShoppingCart } from "react-icons/ci";
 
+
 export function NavBar() {
   const onClickLogout = () => {
     AuthService.logout();

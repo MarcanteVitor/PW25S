@@ -1,4 +1,3 @@
-
 import '../../App.css';
 import { useNavigate } from "react-router-dom";
 import { Button } from '@chakra-ui/react'
@@ -8,7 +7,11 @@ import ProductService from "@/service/ProductService";
 import { CiSearch } from "react-icons/ci";
 import { BsCart2 } from "react-icons/bs";
 import AuthService from '@/service/AuthService';
- 
+import 'bootstrap/dist/css/bootstrap.css';
+import ModalExemplo from "../cart/index";
+
+
+
 
 const onClickLogout = () => {
   AuthService.logout();
@@ -55,9 +58,10 @@ export function ProductList() {
   return (
     <>
       <div className="d-flex justify-content-end" role="group" aria-label="Exemplo básico">
-        <button type="button" className="btn btn-light" id="cart">
-          <BsCart2/>
+        <button type="button" className="btn btn-light" id="cart">       
+          <ModalExemplo />
           </button>
+          
           <button className="btn btn-light" onClick={onClickLogout}>
                 &times; Sair
           </button>
@@ -99,6 +103,10 @@ export function ProductList() {
           </div>
         ))}
         {apiError && <div className="alert alert-danger">{apiError}</div>}
+      </div>
+      
+      <div className="modal-dialog modal-dialog-scrollable"  id='myModal'>
+          ...
       </div>
     </>
   );
