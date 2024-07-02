@@ -13,18 +13,7 @@ import java.util.List;
 @Builder
 public class PedidoDto {
 
-    private String formaPagamento;
+//    private String formaPagamento;
 
     private List<PedidoItemDto> itensPedido;
 }
-
-//pedido:
-//        {
-//        "formaPagamento" : "PIX",
-//        "itensPedido" : [
-//        {
-//        "produto" : { "id": 1},
-//        "quantidade": 5
-//        },
-//        ]
-//        }

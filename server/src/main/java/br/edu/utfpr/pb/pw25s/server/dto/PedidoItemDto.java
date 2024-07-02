@@ -15,7 +15,8 @@ public class PedidoItemDto {
 
     private Integer quantidade;
 
-    private ProductDto produto;
+//    private ProductDto produto;
+    private Integer produtoId;
 
     private BigDecimal valorPago;
 }
