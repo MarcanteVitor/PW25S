@@ -21,3 +21,15 @@ export interface IProduct {
   price: number;
   category: ICategory;
 }
+
+export interface IProductCache {
+  produtoId?: number;
+  produtoNome: string;
+  produtoValor: number;
+  quantidade: number;
+}
+
+export interface IOrder {
+  id?: number;
+  products: IProductCache[];
+}

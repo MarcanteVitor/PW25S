@@ -11,7 +11,6 @@ interface GenericModalProps {
 }
 
 const cartModal: React.FC<GenericModalProps> = ({ show, onHide, products }) => {
-  const [cartItems, setCartItems] = useState<{ produtoId: number, produtoNome: string, produtoValorTotal: number, quantidade: number }[]>([]);
   const navigate = useNavigate();
 
   const clearCart = () =>{
@@ -31,7 +30,7 @@ const cartModal: React.FC<GenericModalProps> = ({ show, onHide, products }) => {
     });
   }
 
-  const buy = () => {
+  const goToCheckOut = () => {
     if(!AuthService.isAuthenticated()){
       Swal.fire({
         title: "Atenção",
@@ -47,6 +46,8 @@ const cartModal: React.FC<GenericModalProps> = ({ show, onHide, products }) => {
           navigate("/login");
         }
       });
+    } else {
+      navigate("/checkout")
     }
   }
 
@@ -57,9 +58,9 @@ const cartModal: React.FC<GenericModalProps> = ({ show, onHide, products }) => {
       </Modal.Header>
       <Modal.Body>
           <ul>
-            {products.map((item: { produtoId: React.Key | null | undefined; produtoNome: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; quantidade: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; produtoValorTotal: { toLocaleString: (arg0: string, arg1: { style: string; currency: string; }) => string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; }; }) => (
+            {products.map((item: { produtoId: React.Key | null | undefined; produtoNome: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; quantidade: string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; produtoValor: { toLocaleString: (arg0: string, arg1: { style: string; currency: string; }) => string | number | boolean | React.ReactElement<any, string | React.JSXElementConstructor<any>> | Iterable<React.ReactNode> | React.ReactPortal | null | undefined; }; }) => (
               <li key={item.produtoId}>
-                {item.produtoNome} - Quantidade: {item.quantidade} - Total: {item.produtoValorTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
+                {item.produtoNome} - Quantidade: {item.quantidade} - Total: {item.produtoValor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
               </li>
             ))}
           </ul>
@@ -67,7 +68,7 @@ const cartModal: React.FC<GenericModalProps> = ({ show, onHide, products }) => {
       <Modal.Footer>
         <Button variant="secondary" onClick={onHide}>Close</Button>
         <Button variant="danger" onClick={clearCart}>Limpar carrinho</Button>
-        <Button variant="success" onClick={buy}>Finalizar pedido</Button>
+        <Button variant="success" onClick={goToCheckOut}>Finalizar pedido</Button>
       </Modal.Footer>
     </Modal>
   );

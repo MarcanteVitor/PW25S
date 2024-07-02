@@ -14,7 +14,7 @@ export function ProductList() {
   const [dataFiltered, setDataFiltered] = useState<IProduct[]>([]);
   const [apiError, setApiError] = useState("");
   const [modalShow, setModalShow] = useState(false);
-  const [cartItems, setCartItems] = useState<{ produtoId: number, produtoNome: string, produtoValorTotal: number, quantidade: number }[]>([]);
+  const [cartItems, setCartItems] = useState<{ produtoId: number, produtoNome: string, produtoValor: number, quantidade: number }[]>([]);
   const [productsOnCartLength, setProductsOnCartLength] = useState(0);
   const { findAll } = ProductService;
   const navigate = useNavigate();
@@ -60,7 +60,7 @@ export function ProductList() {
       const newCartItem = {
         produtoId: product.id ?? 0,
         produtoNome: product.name,
-        produtoValorTotal: product.price,
+        produtoValor: product.price,
         quantidade: 1
       };
       updatedCartItems.push(newCartItem);

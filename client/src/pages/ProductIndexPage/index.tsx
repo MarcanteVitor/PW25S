@@ -1,6 +1,6 @@
 
 import '../../App.css';
-import { Button, Modal } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
 import { IProduct } from "@/commons/interfaces";
 import ProductService from "@/service/ProductService";
@@ -11,7 +11,7 @@ import CartModal from '../../components/cartModal/index'
 export function ProductIndexPage() {
   const [modalShow, setModalShow] = useState(false);
   const [productsOnCartLength, setProductsOnCartLength] = useState(0);
-  const [cartItems, setCartItems] = useState<{ produtoId: number, produtoNome: string, produtoValorTotal: number, quantidade: number }[]>([]);
+  const [cartItems, setCartItems] = useState<{ produtoId: number, produtoNome: string, produtoValor: number, quantidade: number }[]>([]);
   const [apiError, setApiError] = useState("");
   const { produtoId } = useParams();
   const [entity, setEntity] = useState<IProduct>({
@@ -65,7 +65,7 @@ export function ProductIndexPage() {
       const newCartItem = {
         produtoId: product.id ?? 0,
         produtoNome: product.name,
-        produtoValorTotal: product.price,
+        produtoValor: product.price,
         quantidade: 1
       };
       updatedCartItems.push(newCartItem);
