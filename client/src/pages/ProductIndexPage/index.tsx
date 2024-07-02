@@ -6,9 +6,10 @@ import { IProduct } from "@/commons/interfaces";
 import ProductService from "@/service/ProductService";
 import { useParams, useNavigate } from "react-router-dom";
 import { BsCart2 } from 'react-icons/bs';
+import CartModal from '../../components/cartModal/index'
 
 export function ProductIndexPage() {
-  const [showModal, setShowModal] = useState(false);
+  const [modalShow, setModalShow] = useState(false);
   const [productsOnCartLength, setProductsOnCartLength] = useState(0);
   const [cartItems, setCartItems] = useState<{ produtoId: number, produtoNome: string, produtoValorTotal: number, quantidade: number }[]>([]);
   const [apiError, setApiError] = useState("");
@@ -54,23 +55,6 @@ export function ProductIndexPage() {
   };
 
 
-  const openModal = () => setShowModal(true);
-  const closeModal = () => setShowModal(false);
-
-  const onClickOpenCart = () => {
-    try {
-      const produtos = localStorage.getItem("produtos");
-      if (!produtos) {
-        return;
-      }
-      setCartItems(JSON.parse(produtos));
-      openModal();
-    } catch (err) {
-      console.error("Erro ao acessar produtos no carrinho:", err);
-    }
-  };
-
-
   const addOnCart = (product: IProduct) => () => {
     let updatedCartItems = [...cartItems];
     const existingItem = updatedCartItems.find(item => item.produtoId === product.id);
@@ -79,7 +63,7 @@ export function ProductIndexPage() {
       existingItem.quantidade += 1;
     } else {
       const newCartItem = {
-        produtoId: product.id,
+        produtoId: product.id ?? 0,
         produtoNome: product.name,
         produtoValorTotal: product.price,
         quantidade: 1
@@ -99,7 +83,7 @@ export function ProductIndexPage() {
         <form className="d-flex" style={{ display: 'flex', alignItems: 'rigth', margin: '20px', justifyContent: 'end' }}>
           {cartItems.length && (
             <div className="d-flex justify-content-end" role="group" aria-label="Exemplo básico">
-              <button type="button" className="btn btn-light" onClick={onClickOpenCart}>
+              <button type="button" className="btn btn-light" onClick={() => setModalShow(true)}>
                 {productsOnCartLength}
                 <BsCart2 style={{ fontSize: '30px', cursor: 'pointer', color: '#555', marginTop: '-1px' }} />
               </button>
@@ -131,25 +115,11 @@ export function ProductIndexPage() {
         )}
         {apiError && <div className="alert alert-danger">{apiError}</div>}
       </div>
-      <Modal show={showModal} onHide={closeModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Itens no Carrinho</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <ul>
-            {cartItems.map(item => (
-              <li key={item.produtoId}>
-                {item.produtoNome} - Quantidade: {item.quantidade} - Total: {item.produtoValorTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-              </li>
-            ))}
-          </ul>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={closeModal}>
-            Fechar
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      <CartModal
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+        products={cartItems}
+      />
     </>
   );
 };

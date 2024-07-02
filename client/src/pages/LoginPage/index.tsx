@@ -49,7 +49,7 @@ export function LoginPage() {
     if (response.status === 200) {
       setApiSuccess("Autenticação realizada com sucesso!");
       setTimeout(() => {
-        navigate("/home");
+        navigate("/productList");
       }, 1000);
     } else {
       setApiError("Erro ao autenticar o usuário!");

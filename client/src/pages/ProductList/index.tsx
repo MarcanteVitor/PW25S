@@ -7,12 +7,13 @@ import { IProduct } from "@/commons/interfaces";
 import ProductService from "@/service/ProductService";
 import { CiSearch } from "react-icons/ci";
 import 'bootstrap/dist/css/bootstrap.css';
+import CartModal from '../../components/cartModal/index'
 
 export function ProductList() {
   const [data, setData] = useState<IProduct[]>([]);
   const [dataFiltered, setDataFiltered] = useState<IProduct[]>([]);
   const [apiError, setApiError] = useState("");
-  const [showModal, setShowModal] = useState(false);
+  const [modalShow, setModalShow] = useState(false);
   const [cartItems, setCartItems] = useState<{ produtoId: number, produtoNome: string, produtoValorTotal: number, quantidade: number }[]>([]);
   const [productsOnCartLength, setProductsOnCartLength] = useState(0);
   const { findAll } = ProductService;
@@ -28,7 +29,7 @@ export function ProductList() {
     if (produtos) {
       const parsedProdutos = JSON.parse(produtos);
       setProductsOnCartLength(parsedProdutos.length);
-      (parsedProdutos);
+      setCartItems(parsedProdutos);
     }
   };
 
@@ -57,7 +58,7 @@ export function ProductList() {
       existingItem.quantidade += 1;
     } else {
       const newCartItem = {
-        produtoId: product.id,
+        produtoId: product.id ?? 0,
         produtoNome: product.name,
         produtoValorTotal: product.price,
         quantidade: 1
@@ -70,21 +71,7 @@ export function ProductList() {
     localStorage.setItem('produtos', JSON.stringify(updatedCartItems));
   };
 
-  const openModal = () => setShowModal(true);
-  const closeModal = () => setShowModal(false);
 
-  const onClickOpenCart = () => {
-    try {
-      const produtos = localStorage.getItem("produtos");
-      if (!produtos) {
-        return;
-      }
-      setCartItems(JSON.parse(produtos));
-      openModal();
-    } catch (err) {
-      console.error("Erro ao acessar produtos no carrinho:", err);
-    }
-  };
 
   const goToProductPage = (product: IProduct) => () => {
       return navigate("/productIndexPage/" + product.id)
@@ -117,7 +104,7 @@ export function ProductList() {
         <CiSearch style={{ fontSize: '24px', cursor: 'pointer', color: '#555' }} />
         {cartItems.length > 0 && ( 
           <div className="d-flex justify-content-end" role="group">
-            <button type="button" className="btn btn-light" onClick={onClickOpenCart}>
+            <button type="button" className="btn btn-light" onClick={() => setModalShow(true)}>
               {productsOnCartLength}
               <BsCart2 style={{ fontSize: '30px', cursor: 'pointer', color: '#555', marginTop: '-1px' }} />
             </button>
@@ -151,25 +138,11 @@ export function ProductList() {
         {apiError && <div className="alert alert-danger">{apiError}</div>}
       </div>
       {/* Modal de carrinho */}
-      <Modal show={showModal} onHide={closeModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Itens no Carrinho</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <ul>
-            {cartItems.map(item => (
-              <li key={item.produtoId}>
-                {item.produtoNome} - Quantidade: {item.quantidade} - Total: {item.produtoValorTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
-              </li>
-            ))}
-          </ul>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={closeModal}>
-            Fechar
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      <CartModal
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+        products={cartItems}
+      />
     </>
   );
 }
