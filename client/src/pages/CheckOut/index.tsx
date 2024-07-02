@@ -85,9 +85,11 @@ export function CheckOut() {
     const response = await save(order);
     if (response.status === 200 || response.status === 201) {
       // navigate("/products-v2");
-      alert("FUNCIONOU HAHAHAHAAHAHAHHAAH")
+      console.log(response)
+      alert(response.message)
     } else {
-      alert("NÃOOOOOO FUNCIONOU HAHAHAHAAHAHAHHAAH")
+      alert(response.message)
+
 
       setApiError("Falha ao salvar o produto.");
     }

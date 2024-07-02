@@ -23,7 +23,7 @@ public class PedidoController {
 
         //serviceDePedido.salvar(pedido);
 
-        for(PedidoItemDto pedidoItemDto : pedidoDto.getItensPedido()) {
+        for(PedidoItemDto pedidoItemDto : pedidoDto.getProducts()) {
             PedidoItem pedidoItem = new PedidoItem();
             pedidoItem.setPedido( pedido );
 //            pedidoItem.setProduto( buscarOIdDoProdutoEMontarOObjeto );

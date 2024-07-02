@@ -15,5 +15,5 @@ public class PedidoDto {
 
 //    private String formaPagamento;
 
-    private List<PedidoItemDto> itensPedido;
+    private List<PedidoItemDto> products;
 }
