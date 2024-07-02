@@ -28,7 +28,7 @@ export function ProductList() {
     if (produtos) {
       const parsedProdutos = JSON.parse(produtos);
       setProductsOnCartLength(parsedProdutos.length);
-      setCartItems(parsedProdutos);
+      (parsedProdutos);
     }
   };
 
@@ -87,14 +87,14 @@ export function ProductList() {
   };
 
   const goToProductPage = (product: IProduct) => () => {
-    navigate("/productpage" + product);
-  };
+      return navigate("/productIndexPage/" + product.id)
+  }
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const inputValue = event.target.value.toLowerCase();
-    setDataFiltered(data.filter((product) =>
-      product.category.name.toLowerCase().includes(inputValue) || product.name.toLowerCase().includes(inputValue)
-    ));
+    if (event && event.target && event.target.value)
+      return setDataFiltered(dataFiltered.filter(data => data.category.name.toLowerCase().includes(event.target.value.toLowerCase()) || data.name.toLowerCase().includes(event.target.value.toLowerCase())));
+    else
+      setDataFiltered(data)
   };
 
   return (
@@ -115,20 +115,22 @@ export function ProductList() {
           }}
         />
         <CiSearch style={{ fontSize: '24px', cursor: 'pointer', color: '#555' }} />
-        <div className="d-flex justify-content-end" role="group" aria-label="Exemplo básico">
-          <button type="button" className="btn btn-light" onClick={onClickOpenCart}>
-            <BsCart2 style={{ fontSize: '30px', cursor: 'pointer', color: '#555', marginTop: '-1px' }} />
-            {productsOnCartLength}
-          </button>
-        </div>
+        {cartItems.length > 0 && ( 
+          <div className="d-flex justify-content-end" role="group">
+            <button type="button" className="btn btn-light" onClick={onClickOpenCart}>
+              {productsOnCartLength}
+              <BsCart2 style={{ fontSize: '30px', cursor: 'pointer', color: '#555', marginTop: '-1px' }} />
+            </button>
+          </div>
+        )}
       </form>
       <div className="product-grid">
         {dataFiltered.length === 0 && (
           <div className="alert alert-danger">Não há produtos para os filtros especificados.</div>
         )}
         {dataFiltered.map(product => (
-          <div className="product-card" key={product.id} style={{ position: 'relative', paddingBottom: '50px' }}>
-            <div onClick={() => goToProductPage(product)}>
+          <div className="product-card" style={{ position: 'relative', paddingBottom: '50px' }}>
+            <div key={product.id} onClick={goToProductPage(product)}>
               <img
                 src={"https://moodle.utfpr.edu.br/pluginfile.php/1/core_admin/logocompact/300x300/1707141966/UTFPR%20-%20Identidade%20Visual%20-2.png"}
                 alt={product.name}

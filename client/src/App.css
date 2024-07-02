@@ -96,3 +96,39 @@
 }
 
 /* LOGIN  */
+
+
+/* Produto index page */
+
+.product-image-productIndex {
+  width: 100%;
+  height: 250px;
+  width: 400px;
+  margin: 0 auto;
+  border: 2px solid #3c3c3c;
+  border-radius: 15px
+}
+
+.product-title-productIndex {
+  font-size: 3em;
+  margin: 0.3em 0;
+  font-weight: bold;
+}
+
+.product-description-productIndex,
+.product-price-productIndex {
+  margin: 0.2em 0;
+  font-size: 1.5em;
+}
+
+.product-card-productIndex {
+  border: 1px solid #ccc;
+  padding: 8px;
+  border-radius: 8px;
+  text-align: center;
+  min-height: 150px;
+}
+
+
+
+/* Produto index page */

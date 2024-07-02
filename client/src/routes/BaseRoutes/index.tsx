@@ -10,6 +10,9 @@ import { ProductListPage } from "@/pages/ProductListPage";
 import { ProductList } from "@/pages/ProductList";
 import { ProductListPageV2 } from "@/pages/ProductListPageV2";
 import { ProductFormPageV2 } from "@/pages/ProductFormPageV2";
+import { ProductIndexPage } from "@/pages/ProductIndexPage";
+
+
 
 export function BaseRoutes() {
   return (
@@ -19,6 +22,7 @@ export function BaseRoutes() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<UserSignupPage />} />
         <Route path="/productList" element={<ProductList />} />
+        <Route path="/productIndexPage/:produtoId" element={<ProductIndexPage />} /> 
 
         {/* Private Routes */}
         <Route element={<AuthenticatedRoutes />}>
