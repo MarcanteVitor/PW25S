@@ -1,131 +1,57 @@
 import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { Button, Form  } from 'react-bootstrap';
 import {
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
   TableCaption,
-  TableContainer,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  IconButton,
+  TableContainer
 } from "@chakra-ui/react";
-import {
-  BsThreeDotsVertical,
-  BsPencilSquare,
-  BsTrash,
-  BsPlusCircle,
-  BsBagCheckFill 
-} from "react-icons/bs";
-import { IOrder, IProductCache } from "@/commons/interfaces";
-import Swal from 'sweetalert2'
-import { FaCheck } from "react-icons/fa";
 import OrderService from "@/service/OrderService";
 
-export function CheckOut() {
+export function Orders() {
   const [apiError, setApiError] = useState("");
-  const [cartItems, setCartItems] = useState<{ produtoId: number, produtoNome: string, produtoValor: number, quantidade: number }[]>([]);
-  const [selectedPayment, setSelectedPayment] = useState('');
-  const [arrayProdutos, setArrayProdutos] = useState<{ id: number; nome: string; valor: number; quantidade: number }[]>([]);
-  const produtoCache = { id: 2, nome: "Notebook Arus 15.6", valor: 2449, quantidade: 1 };
-
-  const { save, findAll } = OrderService;
+  const [arrayOrders, setArrayOrders] = useState<{ id: number; valorTotal: number; data: string; formaPagamento: string }[]>([]);
+  const { findAll } = OrderService;
 
   useEffect(() => {
     getOrders();
   }, []);
 
 
-  const getOrders = () => {
-    OrderService.findAll()
-  };
-
-  const handleSelectChange = (e:any) => {
-    setSelectedPayment(e.target.value);
-  };
-
-  const saveOrder = async() =>{
-    if(!selectedPayment)
-      return Swal.fire({
-        title: "Atenção",
-        text: "Informe uma forma de pagamento para prosseguir",
-        icon: "error",
-        showConfirmButton: false,
-        timer: 1500
-      })
-      
-    const order: IOrder = {
-      formaPagamento: selectedPayment,
-      products: cartItems
-    }
-
-    const response = await save(order);
-    alert(response.status)
+  const getOrders = async () => {
+    const response = await OrderService.findAll()
     if (response.status === 200 || response.status === 201) {
-      // navigate("/products-v2");
-      console.log(response)
+      setArrayOrders(response.data)
     } else {
-      alert(response.message)
-
-
       setApiError("Falha ao salvar o produto.");
     }
 
-
-    localStorage.removeItem("produtos")
-  }
+  };
 
   return (
     <div className="container">
-      <h1 className="fs-2 mb-4 text-center">Lista de Produtos no carrinho</h1>
-      <div className="text-center" style={{ gap: '10px', display: 'flex', justifyContent: 'center' }}>
-        <Link
-          className="btn btn-success btn-icon mb-3"
-          to="/productList"
-          title="Adicionar mais"
-          style={{ display: "inline-block" }}
-        >
-          <BsPlusCircle style={{ display: "inline-block" }} /> Novo Produto
-        </Link>
-        <Button className='btn btn-success btn-icon mb-3' onClick={saveOrder} style={{ display: "inline-block" }}> 
-          <FaCheck style={{ display: "inline-block" }}/> Finalizar compra
-        </Button>
-      </div>
-      <div className="text-center" style={{ gap: '10px', display: 'flex', justifyContent: 'center' }}>
-        <Form.Select value={selectedPayment} onChange={handleSelectChange} className="col-6">
-          <option>Selecione o pagamento</option>
-          <option value="pix">Pix</option>
-          <option value="dinheiro">Dinheiro</option>
-          <option value="cheque">Cheque</option>
-        </Form.Select>
-      </div>
+      <h1 className="fs-2 mb-4 text-center">Lista de Pedidos</h1>
       <TableContainer>
         <Table>
           <TableCaption>Lista de Produtos</TableCaption>
           <Thead>
             <Tr>
               <Th>#</Th>
-              <Th>Nome</Th>
-              <Th>Valor unit</Th>
-              <Th>Quantidade</Th>
+              <Th>Data</Th>
               <Th>Valor total</Th>
+              <Th>Forma de pagamento</Th>
             </Tr>
           </Thead>
           <Tbody>
-            {cartItems.map((product) => (
-              <Tr key={product.produtoId} _hover={{ cursor: "pointer", background: "#eee" }}>
-                <Td>{product.produtoId}</Td>
-                <Td>{product.produtoNome}</Td>
-                <Td>{product.produtoValor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</Td>
-                <Td>{product.quantidade}</Td>
-                <Td>{(product.quantidade * product.produtoValor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</Td>
+            {arrayOrders.map((order) => (
+              <Tr key={order.id} _hover={{ cursor: "pointer", background: "#eee" }}>
+                <Td>{order.id}</Td>
+                <Td>{order.data}</Td>
+                <Td>{order.valorTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</Td>
+                <Td>{order.formaPagamento}</Td>
               </Tr>
             ))}
           </Tbody>

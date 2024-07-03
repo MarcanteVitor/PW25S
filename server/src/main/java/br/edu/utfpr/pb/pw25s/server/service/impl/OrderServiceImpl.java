@@ -39,14 +39,14 @@ public class OrderServiceImpl extends CrudServiceImpl<Order, Long> implements IO
         return orderRepository;
     }
 
-    @Override
-    public List<Order> findByUser(String username) {
-        User user = userRepository.findByUsername(username);
-        if (user == null) {
-            throw new RuntimeException("User not found: " + username);
-        }
-        return orderRepository.findByUser(user);
-    }
+//    @Override
+//    public List<Order> findByUser(String username) {
+//        User user = userRepository.findByUsername(username);
+//        if (user == null) {
+//            throw new RuntimeException("User not found: " + username);
+//        }
+//        return orderRepository.findByUser(user);
+//    }
     @Override
     @Transactional
     public Order saveOrder(OrderDto orderDto, String username) {

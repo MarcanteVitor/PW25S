@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface IOrderService extends ICrudService<Order, Long> {
     Order saveOrder(OrderDto orderDto, String username);
-    List<Order> findByUser(String username);
+    List<Order> findAll();
 
 }

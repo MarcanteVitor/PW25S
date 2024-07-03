@@ -85,9 +85,12 @@ export function CheckOut() {
         icon: "success",
         showConfirmButton: false,
         timer: 1500
+      }).then( () => {
+        localStorage.removeItem("produtos")
+        navigate("/productList")
       })
     } else {
-      setApiError("Falha ao salvar o produto.");
+      setApiError("Falha ao salvar o pedido.");
     }
 
   }

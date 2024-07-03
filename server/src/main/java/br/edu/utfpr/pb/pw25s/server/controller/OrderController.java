@@ -1,6 +1,7 @@
 package br.edu.utfpr.pb.pw25s.server.controller;
 
 import br.edu.utfpr.pb.pw25s.server.dto.OrderDto;
+import br.edu.utfpr.pb.pw25s.server.dto.OrderDtoReturn;
 import br.edu.utfpr.pb.pw25s.server.model.Order;
 import br.edu.utfpr.pb.pw25s.server.service.ICrudService;
 import br.edu.utfpr.pb.pw25s.server.service.IOrderService;
@@ -44,18 +45,18 @@ public class OrderController extends CrudController<Order, OrderDto, Long> {
         Order savedOrder = orderService.saveOrder(orderDto, username.toString());
         return ResponseEntity.ok(convertToDto(savedOrder));
     }
-    @GetMapping("/user")
-    public ResponseEntity<List<OrderDto>> findByUser() {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = ((UserDetails) principal).getUsername();
 
-        List<Order> orders = orderService.findByUser(username);
-        List<OrderDto> orderDtos = orders.stream()
-                .map(order -> convertToDto(order))
-                .collect(Collectors.toList());
 
-        return ResponseEntity.ok(orderDtos);
-    }
+//    @GetMapping()
+//    public ResponseEntity<List<OrderDtoReturn>> findAll() {
+//        List<Order> orders = orderService.findAll();
+//        for (int i = 0; i < orders.size(); i++){
+//
+//        }
+//
+//        return ResponseEntity.ok(orderDtos);
+//    }
+
 
 
 }

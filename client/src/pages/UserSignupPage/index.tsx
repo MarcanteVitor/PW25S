@@ -110,7 +110,7 @@ export function UserSignupPage() {
                       id="password"
                       name="password"
                       label="Informe a sua senha:"
-                      type="text"
+                      type="password"
                       value={form.password}
                       placeholder="Informe a sua senha"
                       hasError={errors.password ? true : false}

@@ -13,6 +13,7 @@ import { ProductListPageV2 } from "@/pages/ProductListPageV2";
 import { ProductFormPageV2 } from "@/pages/ProductFormPageV2";
 import { ProductIndexPage } from "@/pages/ProductIndexPage";
 import { CheckOut } from "@/pages/CheckOut";
+import { Orders } from "@/pages/OrdersPage/Orders";
 
 
 
@@ -25,7 +26,13 @@ export function BaseRoutes() {
         <Route path="/signup" element={<UserSignupPage />} />
         <Route path="/productList" element={<ProductList />} />
         <Route path="/productIndexPage/:produtoId" element={<ProductIndexPage />} /> 
-        <Route path="/checkout" element={<CheckOut />} /> 
+
+        <Route element={<AuthenticatedRoutesCheckout />}>
+
+          <Route path="/checkout" element={<CheckOut />} /> 
+          <Route path="/orders" element={<Orders />} /> 
+        </Route>
+
 
         {/* Private Routes */}
         <Route element={<AuthenticatedRoutes />}>

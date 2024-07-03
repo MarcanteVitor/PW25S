@@ -8,7 +8,6 @@ export function AuthenticatedRoutesCheckout() {
 
   return isAuthenticated ? (
     <>
-      <NavBar />
       <Outlet />
     </>
   ) : (
