@@ -129,8 +129,10 @@ export function ProductList() {
               </p>
               <p className="product-description">{product.description}</p>
             </div>
-            <div  key={product.id} onClick={goToProductPage(product)} className="d-flex flex-column align-items-center" style={{ position: 'absolute', bottom: '10px', width: '83%' }}>
-              <Button size="sm" className="btn btn-primary mb-2 mt-6">Mais Informações</Button>
+            <div className="d-flex flex-column align-items-center" style={{ position: 'absolute', bottom: '10px', width: '83%' }}>
+              <div key={product.id} onClick={goToProductPage(product)}>
+                <Button size="sm" className="btn btn-primary mb-2 mt-6">Mais Informações</Button>
+              </div>
               <Button className='btn btn-success' size="sm" onClick={addOnCart(product)}>Adicionar</Button>
             </div>
           </div>
