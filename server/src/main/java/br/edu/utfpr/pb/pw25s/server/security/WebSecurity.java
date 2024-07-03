@@ -63,11 +63,12 @@ public class WebSecurity {
         http.authorizeHttpRequests((authorize) -> authorize
                 .requestMatchers(HttpMethod.POST, "/users/**").permitAll()
                 .requestMatchers("/h2-console/**").permitAll()
-                .requestMatchers("/error/**").permitAll()
-                // .requestMatchers(HttpMethod.GET, "/categories/**").permitAll()
-                 .requestMatchers(HttpMethod.GET, "/products/**").permitAll()
-
-                //.requestMatchers(HttpMethod.POST, "/products/**").hasAuthority("ADMIN")
+                .requestMatchers(HttpMethod.GET, "/products/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/categories/**").permitAll()
+//                .requestMatchers(HttpMethod.GET, "/orders/**").permitAll()
+//                .requestMatchers(HttpMethod.POST, "/orders/**").permitAll()
+//                .requestMatchers(HttpMethod.GET, "/orders-products/**").permitAll()
+//                .requestMatchers(HttpMethod.POST, "/orders-products/**").permitAll()
                 .anyRequest().authenticated()
         );
 
@@ -83,8 +84,8 @@ public class WebSecurity {
                                 authService)
                 )
                 .sessionManagement(sessionManagement ->
-                    sessionManagement.sessionCreationPolicy(
-                            SessionCreationPolicy.STATELESS)
+                        sessionManagement.sessionCreationPolicy(
+                                SessionCreationPolicy.STATELESS)
                 );
 
         return http.build();
@@ -95,7 +96,6 @@ public class WebSecurity {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
@@ -114,5 +114,5 @@ public class WebSecurity {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-}
 
+}

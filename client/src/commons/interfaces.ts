@@ -31,5 +31,6 @@ export interface IProductCache {
 
 export interface IOrder {
   id?: number;
+  formaPagamento: string;
   products: IProductCache[];
 }

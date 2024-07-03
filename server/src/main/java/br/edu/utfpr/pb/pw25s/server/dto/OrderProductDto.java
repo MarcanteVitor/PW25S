@@ -7,16 +7,18 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
+//ItensDoPedido = {pedidoProdutosId: Long, pedidoId: Long, produtoId: Long,
+//preço: BigDecimal, quantidade: Integer}
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PedidoItemDto {
+public class OrderProductDto {
 
-    private Integer quantidade;
+    private Long id;
 
-//    private ProductDto produto;
-    private Integer produtoId;
+    private Long produtoId;
 
-    private BigDecimal valorPago;
+    private int quantidade;
 }

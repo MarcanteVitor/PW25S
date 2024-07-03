@@ -33,6 +33,8 @@ const CartModal: React.FC<GenericModalProps> = ({ show, onHide, products }) => {
     }).then((result) => {
       if (result.isConfirmed) {
         localStorage.removeItem("produtos");
+        onHide();
+        navigate("/productList");
       }
     });
   };

@@ -37,7 +37,8 @@ public class User implements UserDetails {
 
     @NotNull
     @Size(min = 6)
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$")
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).*$",
+    message = "{br.edu.pb.utfpr.pw25s.server.user.password.Pattern}")
     private String password;
 
     @Override

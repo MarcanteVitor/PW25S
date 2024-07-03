@@ -24,7 +24,7 @@ import {
   BsPlusCircle,
   BsBagCheckFill 
 } from "react-icons/bs";
-import { IOrder, IProductCache } from "@/commons/interfaces";
+import { IOrder } from "@/commons/interfaces";
 import Swal from 'sweetalert2'
 import { FaCheck } from "react-icons/fa";
 import OrderService from "@/service/OrderService";
@@ -33,8 +33,6 @@ export function CheckOut() {
   const [apiError, setApiError] = useState("");
   const [cartItems, setCartItems] = useState<{ produtoId: number, produtoNome: string, produtoValor: number, quantidade: number }[]>([]);
   const [selectedPayment, setSelectedPayment] = useState('');
-  const [arrayProdutos, setArrayProdutos] = useState<{ id: number; nome: string; valor: number; quantidade: number }[]>([]);
-  const produtoCache = { id: 2, nome: "Notebook Arus 15.6", valor: 2449, quantidade: 1 };
 
   const { save } = OrderService;
 
@@ -65,20 +63,9 @@ export function CheckOut() {
       })
       
 
-    // for(let i = 0; i < cartItems.length; i++){
-    //   const produtoCache: IProductCache = {
-    //     id:cartItems[i].produtoId,
-    //     nome: cartItems[i].produtoNome,
-    //     valor:cartItems[i].produtoValor,
-    //     quantidade:cartItems[i].quantidade
-    //   }
-
-    //   arrayProdutos.push(produtoCache)
-		// 	console.log("TCL: saveOrder -> arrayProdutos", arrayProdutos)
-		// 	console.log("TCL: saveOrder -> produtoCache", produtoCache)
-    // }
 
     const order: IOrder = {
+      formaPagamento: selectedPayment,
       products: cartItems
     }
 
