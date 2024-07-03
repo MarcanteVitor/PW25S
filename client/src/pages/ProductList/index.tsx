@@ -117,7 +117,7 @@ export function ProductList() {
         )}
         {dataFiltered.map(product => (
           <div className="product-card" style={{ position: 'relative', paddingBottom: '50px' }}>
-            <div key={product.id} onClick={goToProductPage(product)}>
+            <div>
               <img
                 src={"https://moodle.utfpr.edu.br/pluginfile.php/1/core_admin/logocompact/300x300/1707141966/UTFPR%20-%20Identidade%20Visual%20-2.png"}
                 alt={product.name}
@@ -129,7 +129,7 @@ export function ProductList() {
               </p>
               <p className="product-description">{product.description}</p>
             </div>
-            <div className="d-flex flex-column align-items-center" style={{ position: 'absolute', bottom: '10px', width: '83%' }}>
+            <div  key={product.id} onClick={goToProductPage(product)} className="d-flex flex-column align-items-center" style={{ position: 'absolute', bottom: '10px', width: '83%' }}>
               <Button size="sm" className="btn btn-primary mb-2 mt-6">Mais Informações</Button>
               <Button className='btn btn-success' size="sm" onClick={addOnCart(product)}>Adicionar</Button>
             </div>

@@ -28,6 +28,13 @@ export function ProductIndexPage() {
     getProdutosOnCache()
   }, []);
 
+  const navigate = useNavigate();
+
+  const goToProductList = () => {
+    navigate('/productList');
+  };
+
+
   const loadData = async (produtoId: any) => {
     const response = await findOne(produtoId);
     if (response.status === 200) {
@@ -79,14 +86,20 @@ export function ProductIndexPage() {
   return (
     <>
       <div>
-
         <form className="d-flex" style={{ display: 'flex', alignItems: 'rigth', margin: '20px', justifyContent: 'end' }}>
           {cartItems.length && (
-            <div className="d-flex justify-content-end" role="group" aria-label="Exemplo básico">
-              <button type="button" className="btn btn-light" onClick={() => setModalShow(true)}>
-                {productsOnCartLength}
-                <BsCart2 style={{ fontSize: '30px', cursor: 'pointer', color: '#555', marginTop: '-1px' }} />
-              </button>
+            <div className="d-flex" role="group">
+              <div className="d-flex" onClick={goToProductList}>
+                <button type="button" className="btn btn-light" onClick={() => setModalShow(true)}>
+                  voltar  
+                </button>
+              </div>
+              <div>
+                <button type="button" className="btn btn-light" onClick={() => setModalShow(true)}>
+                  {productsOnCartLength}
+                  <BsCart2 style={{ fontSize: '30px', cursor: 'pointer', color: '#555', marginTop: '-1px' }} />
+                </button>
+              </div>  
             </div>
           )}
 
