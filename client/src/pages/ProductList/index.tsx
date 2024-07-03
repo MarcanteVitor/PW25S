@@ -7,7 +7,7 @@ import { IProduct } from "@/commons/interfaces";
 import ProductService from "@/service/ProductService";
 import { CiSearch } from "react-icons/ci";
 import 'bootstrap/dist/css/bootstrap.css';
-import CartModal from '../../components/cartModal/index'
+import CartModal from '../../components/cartModal/index';
 
 export function ProductList() {
   const [data, setData] = useState<IProduct[]>([]);
@@ -71,11 +71,13 @@ export function ProductList() {
     localStorage.setItem('produtos', JSON.stringify(updatedCartItems));
   };
 
-
-
   const goToProductPage = (product: IProduct) => () => {
       return navigate("/productIndexPage/" + product.id)
-  }
+  };
+
+  const goToOrderPage = () => {
+    return navigate("/Orders")
+};
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event && event.target && event.target.value)
@@ -103,20 +105,25 @@ export function ProductList() {
         />
         <CiSearch style={{ fontSize: '24px', cursor: 'pointer', color: '#555' }} />
         {cartItems.length > 0 && ( 
-          <div className="d-flex justify-content-end" role="group">
+          <div className="ml-auto">
             <button type="button" className="btn btn-light" onClick={() => setModalShow(true)}>
-              {productsOnCartLength}
-              <BsCart2 style={{ fontSize: '30px', cursor: 'pointer', color: '#555', marginTop: '-1px' }} />
+              <BsCart2 style={{ fontSize: '20px', cursor: 'pointer', color: '#555', marginTop: '-1px' }} />
+              <span className="badge badge-pill badge-info ml-1">{productsOnCartLength}</span>
             </button>
           </div>
         )}
+        <div onClick={goToOrderPage} className="ml-3">
+          <button type="button" className="btn btn-light">
+            Meus Pedidos
+          </button>
+        </div>
       </form>
       <div className="product-grid">
         {dataFiltered.length === 0 && (
           <div className="alert alert-danger">Não há produtos para os filtros especificados.</div>
         )}
         {dataFiltered.map(product => (
-          <div className="product-card" style={{ position: 'relative', paddingBottom: '50px' }}>
+          <div className="product-card" key={product.id} style={{ position: 'relative', paddingBottom: '50px' }}>
             <div>
               <img
                 src={"https://moodle.utfpr.edu.br/pluginfile.php/1/core_admin/logocompact/300x300/1707141966/UTFPR%20-%20Identidade%20Visual%20-2.png"}
@@ -130,7 +137,7 @@ export function ProductList() {
               <p className="product-description">{product.description}</p>
             </div>
             <div className="d-flex flex-column align-items-center" style={{ position: 'absolute', bottom: '10px', width: '83%' }}>
-              <div key={product.id} onClick={goToProductPage(product)}>
+              <div onClick={goToProductPage(product)}>
                 <Button size="sm" className="btn btn-primary mb-2 mt-6">Mais Informações</Button>
               </div>
               <Button className='btn btn-success' size="sm" onClick={addOnCart(product)}>Adicionar</Button>

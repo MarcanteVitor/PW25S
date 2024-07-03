@@ -1,4 +1,3 @@
-
 import '../../App.css';
 import { Button } from 'react-bootstrap';
 import { useEffect, useState } from 'react';
@@ -6,7 +5,7 @@ import { IProduct } from "@/commons/interfaces";
 import ProductService from "@/service/ProductService";
 import { useParams, useNavigate } from "react-router-dom";
 import { BsCart2 } from 'react-icons/bs';
-import CartModal from '../../components/cartModal/index'
+import CartModal from '../../components/cartModal/index';
 
 export function ProductIndexPage() {
   const [modalShow, setModalShow] = useState(false);
@@ -22,18 +21,16 @@ export function ProductIndexPage() {
     category: { id: undefined, name: "" },
   });
   const { findOne } = ProductService;
+  const navigate = useNavigate();
 
   useEffect(() => {
     loadData(produtoId);
     getProdutosOnCache()
   }, []);
 
-  const navigate = useNavigate();
-
   const goToProductList = () => {
     navigate('/productList');
   };
-
 
   const loadData = async (produtoId: any) => {
     const response = await findOne(produtoId);
@@ -45,7 +42,6 @@ export function ProductIndexPage() {
         description: response.data.description,
         category: { id: response.data.category.id, name: "" },
       });
-
       return setApiError("");
     } else {
       return setApiError("Falha ao carregar a lista de produtos.");
@@ -60,7 +56,6 @@ export function ProductIndexPage() {
       setCartItems(parsedProdutos);
     }
   };
-
 
   const addOnCart = (product: IProduct) => () => {
     let updatedCartItems = [...cartItems];
@@ -86,24 +81,22 @@ export function ProductIndexPage() {
   return (
     <>
       <div>
-        <form className="d-flex" style={{ display: 'flex', alignItems: 'rigth', margin: '20px', justifyContent: 'end' }}>
-          {cartItems.length && (
-            <div className="d-flex" role="group">
-              <div className="d-flex" onClick={goToProductList}>
-                <button type="button" className="btn btn-light" onClick={() => setModalShow(true)}>
-                  voltar  
-                </button>
-              </div>
-              <div>
-                <button type="button" className="btn btn-light" onClick={() => setModalShow(true)}>
-                  {productsOnCartLength}
-                  <BsCart2 style={{ fontSize: '30px', cursor: 'pointer', color: '#555', marginTop: '-1px' }} />
-                </button>
-              </div>  
+        <form className="d-flex justify-content-between align-items-center" style={{ margin: '20px' }}>
+          <div>
+            <button type="button" className="btn btn-light" onClick={goToProductList}>
+              Voltar
+            </button>
+          </div>
+          {cartItems.length > 0 && (
+            <div>
+              <button type="button" className="btn btn-light" onClick={() => setModalShow(true)}>
+                <BsCart2 style={{ fontSize: '30px', cursor: 'pointer', color: '#555', marginTop: '-1px' }} />
+                <span className="badge badge-pill badge-info ml-1">{productsOnCartLength}</span>
+              </button>
             </div>
           )}
-
         </form>
+
         {entity && (
           <div className="product-card-productIndex" style={{ position: 'relative', paddingBottom: '50px' }}>
             <h2 className="product-title-productIndex">{entity.name}</h2>
@@ -120,14 +113,16 @@ export function ProductIndexPage() {
             <p className="product-price-productIndex">
               {entity.price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}
             </p>
-            <div style={{ position: 'absolute', bottom: '0', textAlign: 'center', padding: '10px' }}>
-              {/* <Button colorScheme='green' onClick={addOnCart(entity)}> adicionar ao carrinho </Button> */}
-              <Button className='btn btn-success' size="sm" onClick={addOnCart(entity)}>Adicionar</Button>
+            <div style={{ position: 'absolute', bottom: '20px', left: '20px' }}>
+              <Button className='btn btn-success' size="sm" onClick={addOnCart(entity)}>Adicionar ao Carrinho</Button>
             </div>
           </div>
         )}
+
         {apiError && <div className="alert alert-danger">{apiError}</div>}
       </div>
+
+      {/* Modal de carrinho */}
       <CartModal
         show={modalShow}
         onHide={() => setModalShow(false)}
@@ -136,4 +131,3 @@ export function ProductIndexPage() {
     </>
   );
 };
-
