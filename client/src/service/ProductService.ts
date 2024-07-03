@@ -20,6 +20,8 @@ const findAll = async (): Promise<any> => {
   } catch (err: any) {
     response = err.response;
   }
+  
+	console.log("TCL: response", response)
   return response;
 };
 

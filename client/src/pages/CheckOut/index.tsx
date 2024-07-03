@@ -5,35 +5,24 @@ import {
   Table,
   Thead,
   Tbody,
-  Tfoot,
   Tr,
   Th,
   Td,
   TableCaption,
-  TableContainer,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  IconButton,
+  TableContainer
 } from "@chakra-ui/react";
-import {
-  BsThreeDotsVertical,
-  BsPencilSquare,
-  BsTrash,
-  BsPlusCircle,
-  BsBagCheckFill 
-} from "react-icons/bs";
+import { BsPlusCircle } from "react-icons/bs";
 import { IOrder } from "@/commons/interfaces";
 import Swal from 'sweetalert2'
 import { FaCheck } from "react-icons/fa";
 import OrderService from "@/service/OrderService";
+import AuthService from "@/service/AuthService";
 
 export function CheckOut() {
   const [apiError, setApiError] = useState("");
   const [cartItems, setCartItems] = useState<{ produtoId: number, produtoNome: string, produtoValor: number, quantidade: number }[]>([]);
   const [selectedPayment, setSelectedPayment] = useState('');
-
+  const navigate = useNavigate();
   const { save } = OrderService;
 
   useEffect(() => {
@@ -53,6 +42,25 @@ export function CheckOut() {
   };
 
   const saveOrder = async() =>{
+    
+    console.log("TCL: saveOrder -> !AuthService.isAuthenticated()", !AuthService.isAuthenticated())
+    if (!(AuthService.isAuthenticated())) {
+      Swal.fire({
+        title: "Atenção",
+        text: "Faça login para continuar com sua compra",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#198754",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Fazer login",
+        cancelButtonText: "Cancelar"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/login");
+        }
+      });
+    } 
+
     if(!selectedPayment)
       return Swal.fire({
         title: "Atenção",
@@ -71,13 +79,14 @@ export function CheckOut() {
 
     const response = await save(order);
     if (response.status === 200 || response.status === 201) {
-      // navigate("/products-v2");
-      console.log(response)
-      alert(response.message)
+      return Swal.fire({
+        title: "Boa",
+        text: "Pedido salvo com sucesso",
+        icon: "success",
+        showConfirmButton: false,
+        timer: 1500
+      })
     } else {
-      alert(response.message)
-
-
       setApiError("Falha ao salvar o produto.");
     }
 
@@ -110,11 +119,6 @@ export function CheckOut() {
       <TableContainer>
         <Table>
           <TableCaption>Lista de Produtos</TableCaption>
-          {/* <Thead>
-            <Tr>
-              Informações do usuario
-            </Tr>
-          </Thead> */}
           <Thead>
             <Tr>
               <Th>#</Th>
@@ -132,44 +136,9 @@ export function CheckOut() {
                 <Td>{product.produtoValor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</Td>
                 <Td>{product.quantidade}</Td>
                 <Td>{(product.quantidade * product.produtoValor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</Td>
-                {/*
-                <Td>
-                   <Menu>
-                    <MenuButton
-                      as={IconButton}
-                      aria-label="Actions"
-                      icon={<BsThreeDotsVertical size={20} />}
-                      variant="ghost"
-                    />
-                    <MenuList>
-                      <MenuItem
-                        icon={<BsPencilSquare />}
-                        onClick={() => onEdit(`/products-v2/${product.id}`)}
-                      >
-                        Editar
-                      </MenuItem> */}
-                {/* <MenuItem
-                        icon={<BsTrash />}
-                        onClick={() => onRemove(product.id!)}
-                      >
-                        Remover
-                      </MenuItem>
-                    </MenuList>
-                  </Menu> 
-                </Td>
-                  */}
               </Tr>
             ))}
           </Tbody>
-          {/* <Tfoot>
-            <Tr>
-              <Th>#</Th>
-              <Th>Nome</Th>
-              <Th isNumeric>Preço</Th>
-              <Th>Categoria</Th>
-              <Th>Ações</Th>
-            </Tr>
-          </Tfoot> */}
         </Table>
       </TableContainer>
       {apiError && <div className="alert alert-danger">{apiError}</div>}

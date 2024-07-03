@@ -5,11 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
-
-//ItensDoPedido = {pedidoProdutosId: Long, pedidoId: Long, produtoId: Long,
-//preço: BigDecimal, quantidade: Integer}
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

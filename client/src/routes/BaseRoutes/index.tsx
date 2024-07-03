@@ -1,7 +1,8 @@
 import { LoginPage } from "@/pages/LoginPage";
 import { UserSignupPage } from "@/pages/UserSignupPage";
 import { Route, Routes } from "react-router-dom";
-import { AuthenticatedRoutes } from "../AuthenticatedRoutes";
+import { AuthenticatedRoutes } from "../AuthenticatedRoutes/index";
+import { AuthenticatedRoutesCheckout } from "../AuthenticatedRoutes/indexCheckout";
 import { HomePage } from "@/pages/HomePage";
 import { CategoryListPage } from "@/pages/CategoryListPage";
 import { CategoryFormPage } from "@/pages/CategoryFormPage";

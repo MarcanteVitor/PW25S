@@ -61,20 +61,6 @@ export function CheckOut() {
         timer: 1500
       })
       
-
-    // for(let i = 0; i < cartItems.length; i++){
-    //   const produtoCache: IProductCache = {
-    //     id:cartItems[i].produtoId,
-    //     nome: cartItems[i].produtoNome,
-    //     valor:cartItems[i].produtoValor,
-    //     quantidade:cartItems[i].quantidade
-    //   }
-
-    //   arrayProdutos.push(produtoCache)
-		// 	console.log("TCL: saveOrder -> arrayProdutos", arrayProdutos)
-		// 	console.log("TCL: saveOrder -> produtoCache", produtoCache)
-    // }
-
     const order: IOrder = {
       formaPagamento: selectedPayment,
       products: cartItems
@@ -123,11 +109,6 @@ export function CheckOut() {
       <TableContainer>
         <Table>
           <TableCaption>Lista de Produtos</TableCaption>
-          {/* <Thead>
-            <Tr>
-              Informações do usuario
-            </Tr>
-          </Thead> */}
           <Thead>
             <Tr>
               <Th>#</Th>
@@ -145,44 +126,9 @@ export function CheckOut() {
                 <Td>{product.produtoValor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</Td>
                 <Td>{product.quantidade}</Td>
                 <Td>{(product.quantidade * product.produtoValor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</Td>
-                {/*
-                <Td>
-                   <Menu>
-                    <MenuButton
-                      as={IconButton}
-                      aria-label="Actions"
-                      icon={<BsThreeDotsVertical size={20} />}
-                      variant="ghost"
-                    />
-                    <MenuList>
-                      <MenuItem
-                        icon={<BsPencilSquare />}
-                        onClick={() => onEdit(`/products-v2/${product.id}`)}
-                      >
-                        Editar
-                      </MenuItem> */}
-                {/* <MenuItem
-                        icon={<BsTrash />}
-                        onClick={() => onRemove(product.id!)}
-                      >
-                        Remover
-                      </MenuItem>
-                    </MenuList>
-                  </Menu> 
-                </Td>
-                  */}
               </Tr>
             ))}
           </Tbody>
-          {/* <Tfoot>
-            <Tr>
-              <Th>#</Th>
-              <Th>Nome</Th>
-              <Th isNumeric>Preço</Th>
-              <Th>Categoria</Th>
-              <Th>Ações</Th>
-            </Tr>
-          </Tfoot> */}
         </Table>
       </TableContainer>
       {apiError && <div className="alert alert-danger">{apiError}</div>}

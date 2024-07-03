@@ -73,15 +73,6 @@ export function NavBar() {
                 Lista de produtos
               </NavLink>
             </li>
-
-{/* 
-            <li className="nav-item">
-              <button className="btn btn-light" onClick={onClickOpenCart}>
-                <CiShoppingCart />
-              </button>
-            </li> */}
-
-
             <li className="nav-item">
               <button className="btn btn-light" onClick={onClickLogout}>
                 &times; Sair

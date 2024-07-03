@@ -121,8 +121,6 @@ export function ProductIndexPage() {
 
         {apiError && <div className="alert alert-danger">{apiError}</div>}
       </div>
-
-      {/* Modal de carrinho */}
       <CartModal
         show={modalShow}
         onHide={() => setModalShow(false)}

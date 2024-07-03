@@ -51,6 +51,7 @@ export function ProductList() {
   };
 
   const addOnCart = (product: IProduct) => () => {
+    debugger;
     let updatedCartItems = [...cartItems];
     const existingItem = updatedCartItems.find(item => item.produtoId === product.id);
 
@@ -146,7 +147,6 @@ export function ProductList() {
         ))}
         {apiError && <div className="alert alert-danger">{apiError}</div>}
       </div>
-      {/* Modal de carrinho */}
       <CartModal
         show={modalShow}
         onHide={() => setModalShow(false)}

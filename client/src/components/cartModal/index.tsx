@@ -34,7 +34,7 @@ const CartModal: React.FC<GenericModalProps> = ({ show, onHide, products }) => {
       if (result.isConfirmed) {
         localStorage.removeItem("produtos");
         onHide();
-        navigate("/productList");
+        location.reload()
       }
     });
   };
@@ -65,7 +65,7 @@ const CartModal: React.FC<GenericModalProps> = ({ show, onHide, products }) => {
       <Modal.Header closeButton>
         <Modal.Title>Carrinho de produtos</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
+      <Modal.Body style={{height: '450px', overflowY: 'auto'}}>
         <ul className="list-group">
           {products.map((item) => (
             <li key={item.produtoId} className="list-group-item">

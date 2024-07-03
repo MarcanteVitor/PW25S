@@ -19,7 +19,7 @@ public class ProductDto {
 
     @NotNull
     @Size(min = 2, max = 50)
-    private String produtoNome;
+    private String name;
 
     private String description;
 

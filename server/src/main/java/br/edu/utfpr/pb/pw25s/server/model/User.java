@@ -2,7 +2,6 @@ package br.edu.utfpr.pb.pw25s.server.model;
 
 import br.edu.utfpr.pb.pw25s.server.annotation.UniqueUsername;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;

@@ -145,7 +145,6 @@ export function ProductFormPage() {
                 required: "O campo descrição é obrigatório.",
               })}
             >
-              {/* Monta a lista de options do Select de acordo com a lista de categorias vindas do servidor */}
               {categories.map((category: ICategory) => (
                 <option key={category.id} value={category.id}>
                   {category.name}

@@ -2,19 +2,12 @@ package br.edu.utfpr.pb.pw25s.server.controller;
 
 import br.edu.utfpr.pb.pw25s.server.dto.OrderDto;
 import br.edu.utfpr.pb.pw25s.server.model.Order;
-import br.edu.utfpr.pb.pw25s.server.model.User;
-import br.edu.utfpr.pb.pw25s.server.security.SecurityConstants;
-import br.edu.utfpr.pb.pw25s.server.service.AuthService;
 import br.edu.utfpr.pb.pw25s.server.service.ICrudService;
 import br.edu.utfpr.pb.pw25s.server.service.IOrderService;
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
